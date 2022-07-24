@@ -1,15 +1,6 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import {
-  Form,
-  Link,
-  Outlet,
-  useLoaderData,
-  useLocation,
-  useOutlet,
-  useOutletContext,
-  useParams,
-} from "@remix-run/react";
+import { Link, Outlet, useLoaderData, useLocation } from "@remix-run/react";
 
 import { requireUserId } from "~/session.server";
 import { useUser } from "~/utils";
@@ -26,8 +17,8 @@ export async function loader({ request }: LoaderArgs) {
 
 export default function PlantsPage() {
   const data = useLoaderData<typeof loader>();
-  const { plantId } = useParams();
-
+  const route = useLocation();
+  const outletIndex = route.pathname.endsWith("/plants");
   const user = useUser();
 
   return (
@@ -37,10 +28,10 @@ export default function PlantsPage() {
       <main className="flex h-full bg-white">
         <PlantList
           plants={data.plantListItems}
-          className={plantId === undefined ? "" : "hidden sm:block"}
+          className={outletIndex ? "" : "hidden sm:block"}
         />
 
-        <div className={plantId === undefined ? "hidden sm:block" : ""}>
+        <div className={outletIndex ? "hidden sm:block" : ""}>
           <Link
             to="."
             className="absolute right-2 mt-2 rounded-full bg-green-500 p-3 outline-none hover:rounded-lg hover:bg-green-600 focus:bg-green-400 sm:hidden"
