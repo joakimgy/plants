@@ -7,9 +7,11 @@ import { deletePlant } from "~/models/plant.server";
 import { getPlant } from "~/models/plant.server";
 import {
   createWaterEvent,
+  deleteWaterEvent,
   getWaterEventListItems,
 } from "~/models/waterEvent.server";
 import { requireUserId } from "~/session.server";
+import { CrossSvg } from "~/styles/cross";
 import { formatDate } from "~/utils";
 
 export async function loader({ request, params }: LoaderArgs) {
@@ -26,16 +28,30 @@ export async function loader({ request, params }: LoaderArgs) {
 }
 
 export async function action({ request, params }: ActionArgs) {
-  let action = (await request.formData()).get("action");
+  const formData = await request.formData();
+  let action = formData.get("action");
   const userId = await requireUserId(request);
-  invariant(params.plantId, "plantId not found");
+
   switch (action) {
     case "delete": {
+      invariant(params.plantId, "plantId not found");
       await deletePlant({ userId, id: params.plantId });
       return redirect("/plants");
     }
     case "water": {
+      invariant(params.plantId, "plantId not found");
       await createWaterEvent({ plantId: params.plantId, userId });
+      return redirect(`/plants/${params.plantId}`);
+    }
+    case "deleteWaterEvent": {
+      const waterEventId = formData.get("waterEventId");
+      if (typeof waterEventId !== "string") {
+        return json(
+          { errors: { name: "Water event id is required", description: null } },
+          { status: 400 }
+        );
+      }
+      await deleteWaterEvent({ id: waterEventId, userId });
       return redirect(`/plants/${params.plantId}`);
     }
   }
@@ -50,10 +66,18 @@ export default function PlantDetailsPage() {
       <p className="py-6">{data.plant.description}</p>
       {data.waterEvents.length > 0 && (
         <>
-          <p className="py-6 text-xl font-bold">Watering history:</p>
-          <ul className="list-inside list-disc">
+          <p className="py-4 text-xl font-bold">Watering history:</p>
+          <ul className="">
             {data.waterEvents.map((event) => (
-              <li key={event.id}>{formatDate(event.createdAt)}</li>
+              <li key={event.id} className="flex gap-3">
+                {formatDate(event.createdAt)}
+                <Form method="post" className="flex items-center">
+                  <input type="hidden" name="waterEventId" value={event.id} />
+                  <button type="submit" name="action" value="deleteWaterEvent">
+                    <CrossSvg />
+                  </button>
+                </Form>
+              </li>
             ))}
           </ul>
         </>
@@ -67,7 +91,7 @@ export default function PlantDetailsPage() {
             value="water"
             className="mr-4 rounded  bg-green-500 py-2 px-4 text-white hover:bg-green-600 focus:bg-green-400"
           >
-            {"Just watered :)"}
+            Just watered 🌊
           </button>
           <button
             type="submit"

@@ -17,6 +17,15 @@ export function createWaterEvent({
   });
 }
 
+export function deleteWaterEvent({
+  id,
+  userId,
+}: Pick<WaterEvent, "id"> & { userId: User["id"] }) {
+  return prisma.waterEvent.deleteMany({
+    where: { id, userId },
+  });
+}
+
 export function getWaterEventListItems({ plantId }: { plantId: Plant["id"] }) {
   return prisma.waterEvent.findMany({
     select: { id: true, createdAt: true },
