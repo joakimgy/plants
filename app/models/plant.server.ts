@@ -52,3 +52,11 @@ export function deletePlant({
     where: { id, userId },
   });
 }
+
+export function getWaterEventListItems({ plantId }: { plantId: Plant["id"] }) {
+  return prisma.waterEvent.findMany({
+    select: { id: true, createdAt: true },
+    where: { plantId },
+    orderBy: { updatedAt: "desc" },
+  });
+}

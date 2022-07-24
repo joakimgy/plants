@@ -32,10 +32,17 @@ async function seed() {
     },
   });
 
-  await prisma.plant.create({
+  const tulipan = await prisma.plant.create({
     data: {
       name: "Tulipan",
       description: "It's yellow.",
+      userId: user.id,
+    },
+  });
+
+  await prisma.waterEvent.create({
+    data: {
+      plantId: tulipan.id,
       userId: user.id,
     },
   });

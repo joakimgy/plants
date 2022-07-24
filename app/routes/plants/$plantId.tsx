@@ -3,9 +3,10 @@ import { json, redirect } from "@remix-run/node";
 import { Form, useCatch, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import { deletePlant } from "~/models/plant.server";
+import { deletePlant, getWaterEventListItems } from "~/models/plant.server";
 import { getPlant } from "~/models/plant.server";
 import { requireUserId } from "~/session.server";
+import { formatDate } from "~/utils";
 
 export async function loader({ request, params }: LoaderArgs) {
   const userId = await requireUserId(request);
@@ -15,7 +16,9 @@ export async function loader({ request, params }: LoaderArgs) {
   if (!plant) {
     throw new Response("Not Found", { status: 404 });
   }
-  return json({ plant: plant });
+  const waterEvents = await getWaterEventListItems({ plantId: plant.id });
+
+  return json({ plant: plant, waterEvents: waterEvents });
 }
 
 export async function action({ request, params }: ActionArgs) {
@@ -34,6 +37,16 @@ export default function PlantDetailsPage() {
     <div>
       <h3 className="text-2xl font-bold">{data.plant.name}</h3>
       <p className="py-6">{data.plant.description}</p>
+      {data.waterEvents.length > 0 && (
+        <>
+          <p className="py-6 text-xl font-bold">Watering history:</p>
+          <ul className="list-inside list-disc">
+            {data.waterEvents.map((event) => (
+              <li key={event.id}>{formatDate(event.createdAt)}</li>
+            ))}
+          </ul>
+        </>
+      )}
       <hr className="my-4" />
       <Form method="post">
         <button

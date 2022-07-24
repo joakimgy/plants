@@ -24,19 +24,16 @@ CREATE TABLE "Plant" (
     CONSTRAINT "Plant_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-/* -- CreateTable
+-- CreateTable
 CREATE TABLE "WaterEvent" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    
+    "plantId" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-
-    "userId" TEXT NOT NULL,
-    CONSTRAINT "Plant_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
-
-    "plantId" TEXT NOT NULL,
-    CONSTRAINT "WaterEvent_plantId_fkey" FOREIGN KEY ("plantId") REFERENCES "Plant" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-); */
+    "userId" TEXT,
+    CONSTRAINT "WaterEvent_plantId_fkey" FOREIGN KEY ("plantId") REFERENCES "Plant" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "WaterEvent_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");

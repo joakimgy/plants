@@ -30,6 +30,7 @@ model Plant {
   id          String @id @default(cuid())
   name        String
   description String
+  waterEvents WaterEvent[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -41,10 +42,12 @@ model Plant {
 model WaterEvent {
   id      String @id @default(cuid())
   plantId String
+  Plant   Plant?    @relation(fields: [plantId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
+
   User      User?    @relation(fields: [userId], references: [id])
   userId    String?
 }
