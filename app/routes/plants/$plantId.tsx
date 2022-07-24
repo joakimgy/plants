@@ -3,8 +3,12 @@ import { json, redirect } from "@remix-run/node";
 import { Form, useCatch, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import { deletePlant, getWaterEventListItems } from "~/models/plant.server";
+import { deletePlant } from "~/models/plant.server";
 import { getPlant } from "~/models/plant.server";
+import {
+  createWaterEvent,
+  getWaterEventListItems,
+} from "~/models/waterEvent.server";
 import { requireUserId } from "~/session.server";
 import { formatDate } from "~/utils";
 
@@ -22,12 +26,19 @@ export async function loader({ request, params }: LoaderArgs) {
 }
 
 export async function action({ request, params }: ActionArgs) {
+  let action = (await request.formData()).get("action");
   const userId = await requireUserId(request);
   invariant(params.plantId, "plantId not found");
-
-  await deletePlant({ userId, id: params.plantId });
-
-  return redirect("/plants");
+  switch (action) {
+    case "delete": {
+      await deletePlant({ userId, id: params.plantId });
+      return redirect("/plants");
+    }
+    case "water": {
+      await createWaterEvent({ plantId: params.plantId, userId });
+      return redirect(`/plants/${params.plantId}`);
+    }
+  }
 }
 
 export default function PlantDetailsPage() {
@@ -48,14 +59,26 @@ export default function PlantDetailsPage() {
         </>
       )}
       <hr className="my-4" />
-      <Form method="post">
-        <button
-          type="submit"
-          className="rounded bg-green-500  py-2 px-4 text-white hover:bg-green-600 focus:bg-green-400"
-        >
-          Delete
-        </button>
-      </Form>
+      <div className="inline-flex">
+        <Form method="post">
+          <button
+            type="submit"
+            name="action"
+            value="water"
+            className="mr-4 rounded  bg-green-500 py-2 px-4 text-white hover:bg-green-600 focus:bg-green-400"
+          >
+            {"Just watered :)"}
+          </button>
+          <button
+            type="submit"
+            name="action"
+            value="delete"
+            className="rounded bg-green-500  py-2 px-4 text-white hover:bg-green-600 focus:bg-green-400"
+          >
+            Delete
+          </button>
+        </Form>
+      </div>
     </div>
   );
 }

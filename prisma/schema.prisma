@@ -42,12 +42,12 @@ model Plant {
 model WaterEvent {
   id      String @id @default(cuid())
   plantId String
-  Plant   Plant?    @relation(fields: [plantId], references: [id])
+  Plant   Plant?    @relation(fields: [plantId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
 
-  User      User?    @relation(fields: [userId], references: [id])
+  User      User?    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId    String?
 }

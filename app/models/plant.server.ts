@@ -1,4 +1,4 @@
-import type { User, Plant } from "@prisma/client";
+import type { User, Plant, WaterEvent } from "@prisma/client";
 
 import { prisma } from "~/db.server";
 
@@ -50,13 +50,5 @@ export function deletePlant({
 }: Pick<Plant, "id"> & { userId: User["id"] }) {
   return prisma.plant.deleteMany({
     where: { id, userId },
-  });
-}
-
-export function getWaterEventListItems({ plantId }: { plantId: Plant["id"] }) {
-  return prisma.waterEvent.findMany({
-    select: { id: true, createdAt: true },
-    where: { plantId },
-    orderBy: { updatedAt: "desc" },
   });
 }
