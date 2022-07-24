@@ -1,4 +1,5 @@
 import { useMatches } from "@remix-run/react";
+import { format } from "date-fns";
 import { useMemo } from "react";
 
 import type { User } from "~/models/user.server";
@@ -72,11 +73,5 @@ export function validateEmail(email: unknown): email is string {
 
 export function formatDate(postgreDate: string): string {
   const date = new Date(postgreDate);
-  const options: Intl.DateTimeFormatOptions = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-  return date.toLocaleDateString(undefined, options);
+  return format(date, "PPPPp");
 }

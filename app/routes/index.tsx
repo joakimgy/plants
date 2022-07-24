@@ -19,7 +19,7 @@ export default function Index() {
                 </span>
               </h1>
               <p className="text-brown mx-auto mt-6 max-w-lg text-center text-xl sm:max-w-3xl">
-                Login to take better care of your green roomates
+                Take better care of your green friends
               </p>
               <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
                 {user ? (
