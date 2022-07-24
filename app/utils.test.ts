@@ -1,4 +1,4 @@
-import { formatDate, validateEmail } from "./utils";
+import { validateEmail } from "./utils";
 
 test("validateEmail returns false for non-emails", () => {
   expect(validateEmail(undefined)).toBe(false);
@@ -10,9 +10,4 @@ test("validateEmail returns false for non-emails", () => {
 
 test("validateEmail returns true for emails", () => {
   expect(validateEmail("kody@example.com")).toBe(true);
-});
-
-test("formatDate format dates as expected", () => {
-  const rawDate = "2022-07-24T14:31:04.092Z";
-  expect(formatDate(rawDate)).toBe("Sunday, July 24th, 2022 at 4:31 PM");
 });
