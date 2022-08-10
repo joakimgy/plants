@@ -9,24 +9,26 @@ type PlantListProps = {
 export const PlantList = ({ plants, className, ...rest }: PlantListProps) => {
   return (
     <div
-      className={`h-full w-full border-r bg-gray-50 sm:w-80 ${className}`}
+      className={`h-full w-full border-r bg-slate-700 sm:w-80 ${className}`}
       {...rest}
     >
-      <Link to="new" className="block p-4 text-xl text-green-500">
+      <Link to="new" className="block  p-4 text-xl text-green-500">
         + New Plant
       </Link>
 
-      <hr />
+      <hr className="border-slate-600" />
 
       {plants.length === 0 ? (
-        <p className="p-4">No plants yet</p>
+        <p className="p-4 text-white">No plants added</p>
       ) : (
         <ol>
           {plants.map((plant) => (
             <li key={plant.id}>
               <NavLink
                 className={({ isActive }) =>
-                  `block border-b p-4 text-xl ${isActive ? "bg-white" : ""}`
+                  `block border-b border-slate-600 p-4 text-xl text-white ${
+                    isActive ? "bg-slate-800" : ""
+                  }`
                 }
                 to={plant.id}
               >

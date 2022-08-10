@@ -20,6 +20,7 @@ export const meta: MetaFunction = () => ({
   charset: "utf-8",
   title: "Plants",
   viewport: "width=device-width,initial-scale=1",
+  description: "A page for keeping track of all your plants",
 });
 
 export async function loader({ request }: LoaderArgs) {

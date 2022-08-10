@@ -62,7 +62,7 @@ export default function PlantDetailsPage() {
 
   return (
     <div>
-      <h3 className="text-2xl font-bold">{data.plant.name}</h3>
+      <h2 className="text-2xl font-bold">{data.plant.name}</h2>
       <p className="py-6">{data.plant.description}</p>
       {data.waterEvents.length > 0 && (
         <>
@@ -73,7 +73,12 @@ export default function PlantDetailsPage() {
                 {formatDate(event.createdAt)}
                 <Form method="post" className="flex items-center">
                   <input type="hidden" name="waterEventId" value={event.id} />
-                  <button type="submit" name="action" value="deleteWaterEvent">
+                  <button
+                    type="submit"
+                    name="action"
+                    value="deleteWaterEvent"
+                    aria-label="delete"
+                  >
                     <CrossSvg />
                   </button>
                 </Form>
@@ -89,7 +94,7 @@ export default function PlantDetailsPage() {
             type="submit"
             name="action"
             value="water"
-            className="mr-4 rounded bg-green-500 py-2 px-4 text-white hover:bg-green-600 focus:bg-green-400"
+            className="mr-4 rounded bg-green-700 py-2 px-4 text-white hover:bg-green-800 focus:bg-green-600"
           >
             Just watered 🌊
           </button>
@@ -97,7 +102,7 @@ export default function PlantDetailsPage() {
             type="submit"
             name="action"
             value="delete"
-            className="rounded bg-green-500 py-2 px-4 text-white hover:bg-green-600 focus:bg-green-400"
+            className="rounded bg-green-700 py-2 px-4 text-white hover:bg-green-800 focus:bg-green-600"
           >
             Delete
           </button>

@@ -27,7 +27,7 @@ export const Header = ({
       <Form action="/logout" method="post">
         <button
           type="submit"
-          className="rounded bg-green-600 py-2 px-4 text-blue-100 hover:bg-green-500 active:bg-green-600"
+          className="rounded bg-green-700 py-2 px-4 text-white hover:bg-green-600 active:bg-green-700"
         >
           Logout
         </button>

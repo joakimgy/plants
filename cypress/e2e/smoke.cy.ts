@@ -34,7 +34,7 @@ describe("smoke tests", () => {
     cy.visit("/");
 
     cy.findByRole("link", { name: /plants/i }).click();
-    cy.findByText("No plants yet");
+    cy.findByText("No plants added");
 
     cy.findByRole("link", { name: /\+ new plant/i }).click();
 
@@ -46,6 +46,6 @@ describe("smoke tests", () => {
 
     cy.findByRole("button", { name: /delete/i }).click();
 
-    cy.findByText("No plants yet");
+    cy.findByText("No plants added");
   });
 });

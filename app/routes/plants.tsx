@@ -35,6 +35,7 @@ export default function PlantsPage() {
           <Link
             to="."
             className="absolute right-2 mt-2 rounded-full bg-green-500 p-3 outline-none hover:rounded-lg hover:bg-green-600 focus:bg-green-400 sm:hidden"
+            aria-label="Go back"
           >
             <CrossSvg />
           </Link>
